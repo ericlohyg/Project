@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
+import { Query } from 'react-apollo'
+import gql from 'graphql-tag'
 import Form from './form.js'
+import TaskList from './tasklist.js'
 
 class Task extends Component {
 
@@ -17,6 +20,7 @@ class Task extends Component {
         return(
             <div>
             <Form handleSubmitButton={ this.handleSubmit }/>
+            <TaskList />
             </div>
         )
     }

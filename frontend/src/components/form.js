@@ -4,14 +4,8 @@ class Form extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            formControls: {
-                name: {
-                    value: ''
-                },
-                status: {
-                    value: ''
-                }
-            }
+            name: '',
+            status: ''
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -24,30 +18,28 @@ class Form extends Component {
         const value = event.target.value;
 
         this.setState({
-            formControls: {
-                [name]: value
-            }
+            [name]: value    
         });
     }
 
     handleSubmit(event) {
         event.preventDefault();
         const values = {
-            name: this.state.formControls.name.value,
-            status: this.state.status.formControls.status.value
+            name: this.state.name,
+            status: this.state.status
         }
         this.props.handleSubmitButton(values);
     }
 
     render() {
-        return <form onSubmit={this.handleSubmit}>
+        return <form onSubmit={ this.handleSubmit }>
                     <label>
                         Name:
-                        <input type="text" name="name" value={ this.state.formControls.name.value } onChange={ this.handleChange } />
+                        <input type="text" name="name" onChange={ this.handleChange } />
                     </label>
                     <label>
                         Status:
-                        <input type="text" name="status" value={ this.state.formControls.status.value } onChange={ this.handleChange }/>
+                        <input type="text" name="status" onChange={ this.handleChange }/>
                     </label>
                     <input type="submit" value="Submit" />
               </form>;
