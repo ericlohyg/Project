@@ -18,8 +18,6 @@ class TaskList extends Component {
     constructor(props) {
         super(props);
     }
-
-
     render() {
         return(
             <Query query={GET_ALL_TASKS}>

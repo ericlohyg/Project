@@ -1,5 +1,13 @@
 import React, { Component } from 'react';
 
+import gql from "graphql-tag";
+import { Mutation } from "react-apollo";
+
+const POST_TASK = gql`
+    mutation addTask($name: String!, $status: String!) {
+      addTask(name: $name, status: $status)
+    }
+`
 class Form extends Component {
     constructor(props) {
         super(props);
@@ -9,7 +17,6 @@ class Form extends Component {
         };
 
         this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     handleChange(event) {
@@ -18,31 +25,35 @@ class Form extends Component {
         const value = event.target.value;
 
         this.setState({
-            [name]: value    
+            [name]: value
         });
     }
 
-    handleSubmit(event) {
-        event.preventDefault();
-        const values = {
-            name: this.state.name,
-            status: this.state.status
-        }
-        this.props.handleSubmitButton(values);
-    }
-
     render() {
-        return <form onSubmit={ this.handleSubmit }>
-                    <label>
-                        Name:
-                        <input type="text" name="name" onChange={ this.handleChange } />
-                    </label>
-                    <label>
-                        Status:
-                        <input type="text" name="status" onChange={ this.handleChange }/>
-                    </label>
-                    <input type="submit" value="Submit" />
-              </form>;
+        return (
+        <Mutation mutation={POST_TASK}>
+            {(addTaskMutation, {data}) => (
+            <form onSubmit={() => {
+                    addTaskMutation({
+                        variables: {
+                            name: this.state.name,
+                            status: this.state.status
+                        }
+                    })
+                }}>
+                <label>
+                    Name:
+                    <input type="text" name="name" onChange={ this.handleChange } />
+                </label>
+                <label>
+                    Status:
+                    <input type="text" name="status" onChange={ this.handleChange }/>
+                </label>
+                <input type="submit" value="Submit" />
+          </form>
+        )}
+      </Mutation>
+      )
     };
 }
 
