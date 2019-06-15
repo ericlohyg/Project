@@ -1,12 +1,12 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import Task from './components/task.js'
+import TaskContainer from './components/TaskContainer'
 
 function App() {
   return (
     <div className="App">
-      <Task />
+      <TaskContainer />
     </div>
   );
 }

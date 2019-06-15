@@ -1,60 +1,37 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-import gql from "graphql-tag";
-import { Mutation } from "react-apollo";
-
-const POST_TASK = gql`
-    mutation addTask($name: String!, $status: String!) {
-      addTask(name: $name, status: $status)
-    }
-`
-class Form extends Component {
+class Form extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            name: '',
-            status: ''
-        };
+        this.state = {task: ''}
 
-        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleFormChange = this.handleFormChange.bind(this);
+
+    }
+    handleSubmit(event) {
+        event.preventDefault();
+        this.props.onAddTask(this.state.task);
     }
 
-    handleChange(event) {
-
-        const name = event.target.name;
+    handleFormChange(event) {
         const value = event.target.value;
+        const name = event.target.name;
 
         this.setState({
             [name]: value
         });
     }
-
     render() {
-        return (
-        <Mutation mutation={POST_TASK}>
-            {(addTaskMutation, {data}) => (
-            <form onSubmit={() => {
-                    addTaskMutation({
-                        variables: {
-                            name: this.state.name,
-                            status: this.state.status
-                        }
-                    })
-                }}>
-                <label>
-                    Name:
-                    <input type="text" name="name" onChange={ this.handleChange } />
+        return(
+            <form onSubmit={this.handleSubmit}>
+                <label> 
+                    Task:
+                    <input name="task" type="text" onChange={this.handleFormChange}/>
                 </label>
-                <label>
-                    Status:
-                    <input type="text" name="status" onChange={ this.handleChange }/>
-                </label>
-                <input type="submit" value="Submit" />
-          </form>
-        )}
-      </Mutation>
-      )
-    };
+            </form>
+        )
+    }
 }
 
 export default Form;
